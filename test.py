@@ -1,3 +1,6 @@
+
+
+
 import pygame
 
 pygame.init()
@@ -16,6 +19,7 @@ pygame.display.set_caption("GodOfWar")
 playerImg = pygame.image.load('sword.png')
 playerX = 490
 playerY = 490
+playerX_cahnge = 0
 vel = 10
 
 # background
@@ -28,24 +32,30 @@ def player(x,y):
 
 running = True
 while running:
+
+    screen.fill((0, 0, 0))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    screen.fill((0, 0, 0))
-    #screen.blit(background, (0, 0))
 
 
-    userInput = pygame.key.get_pressed()
+    # screen.blit(background, (0, 0))
 
-    if userInput[pygame.K_LEFT]:
-        playerX -= vel
-    if userInput[pygame.K_RIGHT]:
-        playerX += vel
-    if userInput[pygame.K_UP]:
-        playerY -= vel
-    if userInput[pygame.K_DOWN]:
-        playerY += vel
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerX_cahnge = -0.8
+            if event.key == pygame.K_RIGHT:
+                playerX_cahnge = 0.8
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_cahnge = 0
 
+    playerX+= playerX_cahnge
+
+    if playerX <= 0:
+        playerX = 0
+    elif playerX >= :
 
     player(playerX,playerY)
     pygame.display.update()
