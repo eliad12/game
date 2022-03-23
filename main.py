@@ -20,21 +20,28 @@ vel_x = 10
 vel_y = 10
 jump = False
 
+def loadify(img):
+    return pygame.image.load(img).convert_alpha()
+
+
 # background
-#background = pygame.image.load('Untitled.png')
+background = loadify('Untitled.png')
 
 
 def player():
     screen.blit(playerImg, (playerX,playerY))
 
 
+
 running = True
 while running:
+    clock = pygame.time.Clock()
+    clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     screen.fill((0, 0, 0))
-    #screen.blit(background, (0, 0))
+    screen.blit(background, (0, 0))
 
 
     userInput = pygame.key.get_pressed()
@@ -56,5 +63,5 @@ while running:
 
 
     player()
-
+    pygame.time.delay(10)
     pygame.display.update()
