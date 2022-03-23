@@ -22,8 +22,8 @@ vel = 10
 #background = pygame.image.load('Untitled.png')
 
 
-def player():
-    screen.blit(playerImg, (playerX, playerY))
+def player(x,y):
+    screen.blit(playerImg, (x, y))
 
 
 running = True
@@ -33,21 +33,20 @@ while running:
             running = False
     screen.fill((0, 0, 0))
     #screen.blit(background, (0, 0))
-    player()
+
+    playerX += 5
+
+    # userInput = pygame.key.get_pressed()
+    #
+    # if userInput[pygame.K_LEFT] :
+    #     playerX -= vel
+    # if userInput[pygame.K_RIGHT] :
+    #     playerX += vel
+    # if userInput[pygame.K_UP]:
+    #     playerY -= vel
+    # if userInput[pygame.K_DOWN]:
+    #     playerY += vel
 
 
-
-    userInput = pygame.key.get_pressed()
-
-    if userInput[pygame.K_LEFT] :
-        playerX -= vel
-    if userInput[pygame.K_RIGHT] :
-        playerX += vel
-    if userInput[pygame.K_UP]:
-        playerY -= vel
-    if userInput[pygame.K_DOWN]:
-        playerY += vel
-
-
-
+    player(playerX,playerY)
     pygame.display.update()
