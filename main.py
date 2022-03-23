@@ -14,16 +14,18 @@ pygame.display.set_caption("GodOfWar")
 
 # player
 playerImg = pygame.image.load('sword.png')
-playerX = 490
-playerY = 490
-vel = 10
+playerX = 250
+playerY = 650
+vel_x = 10
+vel_y = 10
+jump = False
 
 # background
 #background = pygame.image.load('Untitled.png')
 
 
-def player(x,y):
-    screen.blit(playerImg, (x, y))
+def player():
+    screen.blit(playerImg, (playerX,playerY))
 
 
 running = True
@@ -37,15 +39,22 @@ while running:
 
     userInput = pygame.key.get_pressed()
 
-    if userInput[pygame.K_LEFT] and playerX > 0:
-        playerX -= vel
-    if userInput[pygame.K_RIGHT] and playerX < WINDOW_WIDTH:
-        playerX += vel
-    if userInput[pygame.K_UP] and playerY > 0:
-        playerY -= vel
-    if userInput[pygame.K_DOWN] and playerY < WINDOW_HEIGHT:
-        playerY += vel
+    if userInput[pygame.K_LEFT] and playerX > 220:
+        playerX -= vel_x
+    if userInput[pygame.K_RIGHT] and playerX < 1450:
+        playerX += vel_x
+
+    if jump is False and userInput[pygame.K_SPACE]:
+        jump = True
+
+    if jump is True:
+        playerY -= vel_y*4
+        vel_y -= 1
+        if vel_y < -10:
+            jump = False
+            vel_y = 10
 
 
-    player(playerX,playerY)
+    player()
+
     pygame.display.update()
