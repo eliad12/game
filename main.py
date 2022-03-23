@@ -37,13 +37,13 @@ while running:
 
     userInput = pygame.key.get_pressed()
 
-    if userInput[pygame.K_LEFT]:
+    if userInput[pygame.K_LEFT] and playerX > 0:
         playerX -= vel
-    if userInput[pygame.K_RIGHT]:
+    if userInput[pygame.K_RIGHT] and playerX < WINDOW_WIDTH:
         playerX += vel
-    if userInput[pygame.K_UP]:
+    if userInput[pygame.K_UP] and playerY > 0:
         playerY -= vel
-    if userInput[pygame.K_DOWN]:
+    if userInput[pygame.K_DOWN] and playerY < WINDOW_HEIGHT:
         playerY += vel
 
 
