@@ -20,6 +20,15 @@ vel_x = 10
 vel_y = 10
 jump = False
 
+# enemy
+playerImg_2 = pygame.image.load('enemy.png')
+playerX_2 = 1400
+playerY_2 = 615
+vel_x_2 = 10
+vel_y_2 = 10
+#jump_2 = False
+
+
 def loadify(img):
     return pygame.image.load(img).convert_alpha()
 
@@ -30,6 +39,9 @@ background = loadify('Untitled.png')
 
 def player():
     screen.blit(playerImg, (playerX,playerY))
+
+def enemy():
+    screen.blit(playerImg_2,(playerX_2,playerY_2))
 
 
 
@@ -63,5 +75,6 @@ while running:
 
 
     player()
+    enemy()
     pygame.time.delay(10)
     pygame.display.update()
