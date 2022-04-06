@@ -13,8 +13,8 @@ pygame.display.set_caption("GodOfWar")
 
 
 # player
-playerImg = pygame.image.load('sword.png')
-playerX = 250
+playerImg = pygame.image.load('user.png')
+playerX = 290
 playerY = 650
 vel_x = 10
 vel_y = 10
@@ -58,9 +58,9 @@ while running:
 
     userInput = pygame.key.get_pressed()
 
-    if userInput[pygame.K_LEFT] and playerX > 220:
+    if userInput[pygame.K_LEFT] and playerX > 280:
         playerX -= vel_x
-    if userInput[pygame.K_RIGHT] and playerX < 1450:
+    if userInput[pygame.K_RIGHT] and playerX < 1400:
         playerX += vel_x
 
     if jump is False and userInput[pygame.K_SPACE]:
@@ -73,6 +73,10 @@ while running:
             jump = False
             vel_y = 10
 
+    # distance = playerX_2 - playerX
+    #
+    # while(userInput[pygame.K_RIGHT] or userInput[pygame.K_LEFT]):
+    #     playerX_2 +=0.1
 
     player()
     enemy()

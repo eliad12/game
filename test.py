@@ -55,7 +55,7 @@ while running:
 
     if playerX <= 0:
         playerX = 0
-    elif playerX >= :
+    elif playerX >= 1920:
 
     player(playerX,playerY)
     pygame.display.update()
