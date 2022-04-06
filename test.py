@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 pygame.init()
 
@@ -48,6 +49,10 @@ def loadify(img):
 background = loadify('Untitled.png')
 
 
+# background Sound
+
+
+
 def player():
     screen.blit(playerImg, (playerX, playerY))
 
@@ -57,7 +62,7 @@ def enemy():
 
 
 def check_collision(user_x, enemy_x, user_y, enemy_y, player_health):
-    if user_x == enemy_x and user_y == enemy_y:
+    if enemy_x - user_x <=350:
         player_health -= 50
 
 
@@ -71,6 +76,7 @@ while running:
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
+
 
     pygame.draw.rect(display, RED, (300, 250, 200, 20))
     pygame.draw.rect(display, GREEN, (300, 250, player_health, 25))
@@ -91,7 +97,7 @@ while running:
             player_health -= 50
             print(player_health)
 
-        # check_collision(playerX,enemy_x, playerY,enemy_y)
+        # check_collision(playerX,enemy_x)
 
     if jump is False and userInput[pygame.K_SPACE]:
         jump = True

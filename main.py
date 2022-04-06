@@ -19,12 +19,8 @@ playerY = 650
 vel_x = 10
 vel_y = 10
 jump = False
-player_height = 240
-player_width = 269
-
-
-
-
+player_width = 240 - 10
+player_height = 269
 
 # enemy
 playerImg_2 = pygame.image.load('enemy.png')
@@ -32,8 +28,8 @@ enemy_x = 1400
 enemy_y = 615
 vel_x_2 = 2
 vel_y_2 = 2
-enemy_height = 182
-enemy_width = 294
+enemy_width = 182 - 5
+enemy_height = 294
 #jump_2 = False
 
 
@@ -57,11 +53,6 @@ def player():
 
 def enemy():
     screen.blit(playerImg_2,(enemy_x,enemy_y))
-
-def check_collision(user_x, enemy_x, user_y, enemy_y, player_health):
-    if user_x == enemy_x and user_y == enemy_y:
-        player_health-=50
-    
     
 
 running = True
@@ -76,8 +67,12 @@ while running:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
-    pygame.draw.rect(display, RED,(300,250,200,20))
-    pygame.draw.rect(display, GREEN,(300,250,player_health,25))
+    pygame.draw.rect(display, RED,(1350,250,200,25))
+    pygame.draw.rect(display, GREEN,(1350,250,player_health,25))
+
+    if player_health <=0:
+        print("GameOver")
+        running = False
 
 
     userInput = pygame.key.get_pressed()
@@ -93,10 +88,8 @@ while running:
             enemy_x -= vel_x_2
         elif enemy_x < playerX:
             enemy_x += vel_x_2
-        if playerX == enemy_x and playerY == enemy_y and player and player_height == enemy_height and player_width == enemy_width:
-            player_health -= 50
-            print(player_health)
-
+        if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
+            player_health -= 10
         # check_collision(playerX,enemy_x, playerY,enemy_y)
             
 
