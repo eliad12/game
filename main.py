@@ -1,5 +1,7 @@
 import pygame
 
+
+pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
 
 WINDOW_WIDTH = 1920
@@ -7,9 +9,14 @@ WINDOW_HEIGHT = 1080
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-pygame.display.set_caption("GodOfWar")
-# icon = pygame.imgae.load('game.png')
+pygame.display.set_caption("Swords and Sandals")
+# icon = pygame.image.load('game.png')
 # pygame.display.set_icon(icon)
+
+# PLAY BACKGROUND MUSIC
+pygame.mixer.music.load("sound.wav")
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
 
 
 # player
@@ -30,13 +37,12 @@ vel_x_2 = 2
 vel_y_2 = 2
 enemy_width = 182 - 5
 enemy_height = 294
-#jump_2 = False
 
 
-#HPBAR
-GREEN = (0,255,0)
-RED = (255,0,0)
-display = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
+# HPBAR
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+display = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 player_health = 200
 
 
@@ -49,11 +55,12 @@ background = loadify('Untitled.png')
 
 
 def player():
-    screen.blit(playerImg, (playerX,playerY))
+    screen.blit(playerImg, (playerX, playerY))
+
 
 def enemy():
-    screen.blit(playerImg_2,(enemy_x,enemy_y))
-    
+    screen.blit(playerImg_2, (enemy_x, enemy_y))
+
 
 running = True
 while running:
@@ -63,41 +70,29 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
-    pygame.draw.rect(display, RED,(1350,250,200,25))
-    pygame.draw.rect(display, GREEN,(1350,250,player_health,25))
+    pygame.draw.rect(display, RED, (1350, 250, 200, 25))
+    pygame.draw.rect(display, GREEN, (1350, 250, player_health, 25))
 
-    if player_health <=0:
-        print("GameOver")
+    if player_health <= 0:
         running = False
 
-
     userInput = pygame.key.get_pressed()
-
     if userInput[pygame.K_LEFT] or userInput[pygame.K_RIGHT]:
         if userInput[pygame.K_LEFT] and playerX > 280:
             playerX -= vel_x
         if userInput[pygame.K_RIGHT] and playerX < 1400:
             playerX += vel_x
 
-
         if enemy_x > playerX:
             enemy_x -= vel_x_2
         elif enemy_x < playerX:
             enemy_x += vel_x_2
         if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
-            player_health -= 10
-        # check_collision(playerX,enemy_x, playerY,enemy_y)
-            
-
-
-
-
-
-
+            player_health -= 50
+            playerX -= 150
 
     if jump is False and userInput[pygame.K_SPACE]:
         jump = True
@@ -108,7 +103,6 @@ while running:
         if vel_y < -10:
             jump = False
             vel_y = 10
-
 
     player()
     enemy()
