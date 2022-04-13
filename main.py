@@ -1,7 +1,7 @@
 import pygame
+import random
 
-
-pygame.mixer.pre_init(44100, 16, 2, 4096)
+pygame.mixer.pre_init(44100, 16, 20, 4096)
 pygame.init()
 
 WINDOW_WIDTH = 1920
@@ -14,19 +14,27 @@ icon = pygame.image.load('game icon.jpg')
 pygame.display.set_icon(icon)
 
 # PLAY BACKGROUND MUSIC
-# pygame.mixer.music.load("Background Sound.wav")
-# pygame.mixer.music.set_volume(3)
-# pygame.mixer.music.play(-1)
-
-
-background_Sound = pygame.mixer.music.load('Background Sound.wav')
+pygame.mixer.music.load("Background Sound.wav")
+pygame.mixer.music.set_volume(3)
 pygame.mixer.music.play(-1)
 
+
 # Sound Effects
-sides_sound = pygame.mixer.Sound('Left_Right.ogg')
+sides_sound = pygame.mixer.Sound('Left_Right.mp3')
+fight_sound_1 = pygame.mixer.Sound('fight 1.mp3')
+fight_sound_2 = pygame.mixer.Sound('fight 2.mp3')
+
+
+class SoundManager:
+    sounds = [fight_sound_1, fight_sound_2]
+
+
+def playrandom():
+    pygame.mixer.Channel(4).play(random.choice(SoundManager.sounds))
 
 
 # player
+
 playerImg = pygame.image.load('user.png')
 playerX = 290
 playerY = 650
@@ -96,15 +104,12 @@ while running:
 
     userInput = pygame.key.get_pressed()
     if userInput[pygame.K_LEFT] or userInput[pygame.K_RIGHT]:
+        pygame.mixer.Channel(3).play(sides_sound, maxtime=100)
 
         if userInput[pygame.K_LEFT] and playerX > 280:
             playerX -= vel_x
         if userInput[pygame.K_RIGHT] and playerX < 1400:
             playerX += vel_x
-        if userInput[pygame.K_LEFT]:
-            sides_sound.play(1)
-        elif userInput[pygame.K_RIGHT]:
-            sides_sound.play(-1)
 
         if enemy_x > playerX:
             enemy_x -= vel_x_2
@@ -113,6 +118,7 @@ while running:
         if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
             enemy_health -= 50
             jump = True
+            playrandom()
             playerX -= 150
 
     if jump is False and userInput[pygame.K_SPACE]:
