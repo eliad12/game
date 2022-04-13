@@ -1,11 +1,10 @@
 import pygame
 import random
+from Constants import *
 
 pygame.mixer.pre_init(44100, 16, 20, 4096)
 pygame.init()
 
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
@@ -23,6 +22,7 @@ pygame.mixer.music.play(-1)
 sides_sound = pygame.mixer.Sound('Left_Right.mp3')
 fight_sound_1 = pygame.mixer.Sound('fight 1.mp3')
 fight_sound_2 = pygame.mixer.Sound('fight 2.mp3')
+defend = pygame.mixer.Sound('defend.mp3')
 
 
 class SoundManager:
@@ -49,14 +49,13 @@ playerImg_2 = pygame.image.load('enemy.png')
 enemy_x = 1400
 enemy_y = 615
 vel_x_2 = 3.5
-vel_y_2 = 2
+vel_y_2 = 10
 enemy_width = 182 - 5
 enemy_height = 294
+jump_enemy = False
 
 
 # HPBAR
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
 display = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 player_health = 200
 enemy_health = 200
@@ -102,9 +101,33 @@ while running:
         print("Game Over, you lose")
         running = False
 
+
+
     userInput = pygame.key.get_pressed()
     if userInput[pygame.K_LEFT] or userInput[pygame.K_RIGHT]:
-        pygame.mixer.Channel(3).play(sides_sound, maxtime=100)
+        # pygame.mixer.Channel(3).play(sides_sound, maxtime=100)
+        who_play = random.randint(0, 1)
+        if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
+            if who_play == 1:
+                player_damage = random.randint(0, 50)
+                enemy_health -= player_damage
+                print(player_damage)
+                if player_damage == 0:
+                    pygame.mixer.Channel(6).play(defend, maxtime=100)
+                else:
+                    playrandom()
+                jump_enemy = True
+                enemy_x += 150
+            elif who_play == 0:
+                enemy_damage = random.randint(0, 50)
+                player_health -= enemy_damage
+                print(enemy_damage)
+                if enemy_damage == 0:
+                    pygame.mixer.Channel(6).play(defend, maxtime=100)
+                else:
+                    playrandom()
+                jump = True
+                playerX -= 150
 
         if userInput[pygame.K_LEFT] and playerX > 280:
             playerX -= vel_x
@@ -115,21 +138,37 @@ while running:
             enemy_x -= vel_x_2
         elif enemy_x < playerX:
             enemy_x += vel_x_2
-        if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
-            enemy_health -= 50
-            jump = True
-            playrandom()
-            playerX -= 150
+        # if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
+        #     enemy_damage = random.randint(0, 50)
+        #     player_health -= enemy_damage
+        #     print(enemy_damage)
+        #     if enemy_damage == 0:
+        #         pygame.mixer.Channel(6).play(defend, maxtime=100)
+        #     else:
+        #         playrandom()
+        #     jump_enemy = True
+        #     enemy_x -= 150
+
 
     if jump is False and userInput[pygame.K_SPACE]:
         jump = True
 
-    if jump is True:
+    if jump:
         playerY -= vel_y*4
         vel_y -= 1
         if vel_y < -10:
             jump = False
             vel_y = 10
+
+
+
+    if jump_enemy:
+        enemy_y -= vel_y_2*4
+        vel_y_2 -= 1
+        if vel_y_2 < -10:
+            jump_enemy = False
+            vel_y_2 = 10
+
 
     player()
     enemy()
