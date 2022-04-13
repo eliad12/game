@@ -19,10 +19,14 @@ pygame.mixer.music.play(-1)
 
 
 # Sound Effects
-sides_sound = pygame.mixer.Sound('Left_Right.mp3')
+sides_sound = pygame.mixer.Sound('Left_Right.ogg')
 fight_sound_1 = pygame.mixer.Sound('fight 1.mp3')
 fight_sound_2 = pygame.mixer.Sound('fight 2.mp3')
 defend = pygame.mixer.Sound('defend.mp3')
+
+
+# def menu():
+
 
 
 class SoundManager:
@@ -66,7 +70,16 @@ def loadify(img):
 
 
 # background
-background = loadify('Untitled.png')
+background  = loadify('Untitled.png')
+exit_background = pygame.image.load('esc backgrouind.gif').convert_alpha()
+
+
+def exit_game(background):
+    pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
+    # exit_img = pygame.image.load()
+    pygame.display.update()
 
 
 def player():
@@ -77,6 +90,8 @@ def enemy():
     screen.blit(playerImg_2, (enemy_x, enemy_y))
 
 
+
+
 running = True
 while running:
     clock = pygame.time.Clock()
@@ -84,6 +99,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
@@ -102,8 +118,8 @@ while running:
         running = False
 
 
-
     userInput = pygame.key.get_pressed()
+
     if userInput[pygame.K_LEFT] or userInput[pygame.K_RIGHT]:
         # pygame.mixer.Channel(3).play(sides_sound, maxtime=100)
         who_play = random.randint(0, 1)
@@ -138,16 +154,6 @@ while running:
             enemy_x -= vel_x_2
         elif enemy_x < playerX:
             enemy_x += vel_x_2
-        # if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
-        #     enemy_damage = random.randint(0, 50)
-        #     player_health -= enemy_damage
-        #     print(enemy_damage)
-        #     if enemy_damage == 0:
-        #         pygame.mixer.Channel(6).play(defend, maxtime=100)
-        #     else:
-        #         playrandom()
-        #     jump_enemy = True
-        #     enemy_x -= 150
 
 
     if jump is False and userInput[pygame.K_SPACE]:
@@ -169,8 +175,24 @@ while running:
             jump_enemy = False
             vel_y_2 = 10
 
+    if userInput[pygame.K_ESCAPE]:
+        exit_game(background)
+        pygame.time.delay(100)
+        game_over = True
+        while game_over:
+            for event_exit in pygame.event.get():
+                exit_click = pygame.key.get_pressed()
+                if exit_click[pygame.K_z]:
+                    game_over = False
+                    running = False
+                if exit_click[pygame.K_x]:
+                    game_over = False
+
+
+
 
     player()
     enemy()
     pygame.time.delay(10)
     pygame.display.update()
+
