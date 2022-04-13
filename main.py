@@ -10,20 +10,27 @@ WINDOW_HEIGHT = 1080
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 pygame.display.set_caption("Swords and Sandals")
-# icon = pygame.image.load('game.png')
-# pygame.display.set_icon(icon)
+icon = pygame.image.load('game icon.jpg')
+pygame.display.set_icon(icon)
 
 # PLAY BACKGROUND MUSIC
-pygame.mixer.music.load("sound.wav")
-pygame.mixer.music.set_volume(0.5)
+# pygame.mixer.music.load("Background Sound.wav")
+# pygame.mixer.music.set_volume(3)
+# pygame.mixer.music.play(-1)
+
+
+background_Sound = pygame.mixer.music.load('Background Sound.wav')
 pygame.mixer.music.play(-1)
+
+# Sound Effects
+sides_sound = pygame.mixer.Sound('Left_Right.ogg')
 
 
 # player
 playerImg = pygame.image.load('user.png')
 playerX = 290
 playerY = 650
-vel_x = 10
+vel_x = 8
 vel_y = 10
 jump = False
 player_width = 240 - 10
@@ -33,7 +40,7 @@ player_height = 269
 playerImg_2 = pygame.image.load('enemy.png')
 enemy_x = 1400
 enemy_y = 615
-vel_x_2 = 2
+vel_x_2 = 3.5
 vel_y_2 = 2
 enemy_width = 182 - 5
 enemy_height = 294
@@ -44,6 +51,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 display = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 player_health = 200
+enemy_health = 200
 
 
 def loadify(img):
@@ -73,25 +81,38 @@ while running:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
-    pygame.draw.rect(display, RED, (1350, 250, 200, 25))
-    pygame.draw.rect(display, GREEN, (1350, 250, player_health, 25))
+    pygame.draw.rect(display, RED, (400, 250, 200, 25))
+    pygame.draw.rect(display, GREEN, (400, 250, player_health, 25))
 
-    if player_health <= 0:
+    pygame.draw.rect(display, RED, (1300, 250, 200, 25))
+    pygame.draw.rect(display, GREEN, (1300, 250, enemy_health, 25))
+
+    if enemy_health <= 0:
+        print("Game Over, you won")
+        running = False
+    elif player_health <= 0:
+        print("Game Over, you lose")
         running = False
 
     userInput = pygame.key.get_pressed()
     if userInput[pygame.K_LEFT] or userInput[pygame.K_RIGHT]:
+
         if userInput[pygame.K_LEFT] and playerX > 280:
             playerX -= vel_x
         if userInput[pygame.K_RIGHT] and playerX < 1400:
             playerX += vel_x
+        if userInput[pygame.K_LEFT]:
+            sides_sound.play(1)
+        elif userInput[pygame.K_RIGHT]:
+            sides_sound.play(-1)
 
         if enemy_x > playerX:
             enemy_x -= vel_x_2
         elif enemy_x < playerX:
             enemy_x += vel_x_2
         if enemy_x <= playerX <= enemy_x + enemy_width or playerX + player_width > enemy_x:
-            player_health -= 50
+            enemy_health -= 50
+            jump = True
             playerX -= 150
 
     if jump is False and userInput[pygame.K_SPACE]:
