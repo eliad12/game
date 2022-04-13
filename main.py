@@ -25,10 +25,6 @@ fight_sound_2 = pygame.mixer.Sound('fight 2.mp3')
 defend = pygame.mixer.Sound('defend.mp3')
 
 
-# def menu():
-
-
-
 class SoundManager:
     sounds = [fight_sound_1, fight_sound_2]
 
@@ -70,15 +66,13 @@ def loadify(img):
 
 
 # background
-background  = loadify('Untitled.png')
-exit_background = pygame.image.load('esc backgrouind.gif').convert_alpha()
+start_background = loadify('Untitled.png')
 
 
-def exit_game(background):
+def exit_game(start_background):
     pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     screen.fill((0, 0, 0))
-    screen.blit(background, (0, 0))
-    # exit_img = pygame.image.load()
+    screen.blit(start_background, (0, 0))
     pygame.display.update()
 
 
@@ -90,8 +84,6 @@ def enemy():
     screen.blit(playerImg_2, (enemy_x, enemy_y))
 
 
-
-
 running = True
 while running:
     clock = pygame.time.Clock()
@@ -100,9 +92,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
     screen.fill((0, 0, 0))
-    screen.blit(background, (0, 0))
+    screen.blit(start_background, (0, 0))
 
     pygame.draw.rect(display, RED, (400, 250, 200, 25))
     pygame.draw.rect(display, GREEN, (400, 250, player_health, 25))
@@ -116,7 +107,6 @@ while running:
     elif player_health <= 0:
         print("Game Over, you lose")
         running = False
-
 
     userInput = pygame.key.get_pressed()
 
@@ -155,7 +145,6 @@ while running:
         elif enemy_x < playerX:
             enemy_x += vel_x_2
 
-
     if jump is False and userInput[pygame.K_SPACE]:
         jump = True
 
@@ -166,8 +155,6 @@ while running:
             jump = False
             vel_y = 10
 
-
-
     if jump_enemy:
         enemy_y -= vel_y_2*4
         vel_y_2 -= 1
@@ -176,7 +163,7 @@ while running:
             vel_y_2 = 10
 
     if userInput[pygame.K_ESCAPE]:
-        exit_game(background)
+        exit_game(start_background)
         pygame.time.delay(100)
         game_over = True
         while game_over:
@@ -188,11 +175,7 @@ while running:
                 if exit_click[pygame.K_x]:
                     game_over = False
 
-
-
-
     player()
     enemy()
     pygame.time.delay(10)
     pygame.display.update()
-
